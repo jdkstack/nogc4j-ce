@@ -1,4 +1,4 @@
-# A lightweight java logging library and android logging library(pre-alpha).
+# A lightweight java logging library and android logging library(alpha).
 
 A reliable(asynchronous and synchronous), high-performance(low latency and high throughput), thread safe(consume and produce), flexible(support extension), clear-model(simple architecture), pure java logging library and android logging library.
 
