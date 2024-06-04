@@ -1,0 +1,10 @@
+*
+!*/
+!style/**
+!nogc-*/**/src/**
+!pom.xml
+!/.gitignore
+!/README*.md
+!LICENSE.txt
+!/.gitattributes
+!docs/**

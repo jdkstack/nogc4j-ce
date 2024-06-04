@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>nogc-core</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>org.jdkstack.logging.nogc.core</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
+        <!-- https://maven.apache.org/plugins/maven-jar-plugin/examples/include-exclude.html-->
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.3.0</version>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <artifactId>nogc-api</artifactId>
+      <groupId>org.jdkstack</groupId>
+      <version>1.8</version>
+    </dependency>
+    <dependency>
+      <artifactId>disruptor</artifactId>
+      <groupId>com.lmax</groupId>
+      <version>3.4.4</version>
+    </dependency>
+  </dependencies>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>nogc</artifactId>
+    <groupId>org.jdkstack</groupId>
+    <version>1.8</version>
+  </parent>
+</project>

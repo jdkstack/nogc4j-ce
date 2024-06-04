@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+    <RollingRandomAccessFile name="File" fileName="./log/app.log" filePattern="./log/app-%d{yyyy-MM-dd HH-mm-ss}-.log">
+      <PatternLayout pattern="[%t] %l - %msg%n"/>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10000 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="10"/>
+    </RollingRandomAccessFile>
+  </Appenders>
+  <Loggers>
+    <Root level="trace" includeLocation="true">
+      <AppenderRef ref="File"/>
+    </Root>
+  </Loggers>
+</Configuration>
