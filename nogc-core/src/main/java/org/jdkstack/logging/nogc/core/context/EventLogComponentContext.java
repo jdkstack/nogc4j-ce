@@ -7,8 +7,6 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import java.util.HashMap;
-import java.util.Map;
 import org.jdkstack.logging.nogc.api.config.Configuration;
 import org.jdkstack.logging.nogc.api.config.ContextConfiguration;
 import org.jdkstack.logging.nogc.api.config.HandlerConfig;
@@ -48,8 +46,6 @@ public class EventLogComponentContext extends LifecycleBase implements LogCompon
   private final ContextConfiguration contextConfiguration = new LogComponentContextConfiguration();
   /** . */
   private final ThreadMonitor threadMonitor = new ThreadMonitor();
-  /** <=3600. */
-  private Map<Integer, StackTraceElement[]> stackTraces = new HashMap<>(4800);
   /** . */
   private Disruptor<Record> disruptor = null;
 
@@ -189,21 +185,19 @@ public class EventLogComponentContext extends LifecycleBase implements LogCompon
   @Override
   public void asynchronous(final int index, final String logLevel, final String dateTime, final String message, final String name, final Object arg1, final Object arg2, final Object arg3, final Object arg4, final Object arg5, final Object arg6, final Object arg7, final Object arg8, final Object arg9, final Throwable thrown) {
     if (LifecycleState.STARTED == getState()) {
-      final RecorderConfig recorderConfig = this.getRecorderConfig(name);
-      final String handlers = recorderConfig.getHandlers();
-      final HandlerConfig handlerConfig = this.getHandlerConfig(handlers);
+      final LogProduceThread logProduceThread = ThreadLocalTool.getLogProduceThread();
       final RingBuffer<Record> ringBuffer = disruptor.getRingBuffer();
       final long sequence = ringBuffer.next();
       try {
         final Record record = ringBuffer.get(sequence);
         StackTraceElement stackTraceElement = null;
         if (index != 0) {
-          StackTraceElement[] stackTraceElements = this.stackTraces.get(index);
+          StackTraceElement[] stackTraceElements = logProduceThread.getStackTraceElement(index);
           if (stackTraceElements == null) {
             final Throwable t = new Throwable();
-            this.stackTraces.put(index, t.getStackTrace());
-            stackTraceElements = this.stackTraces.get(index);
+            logProduceThread.setStackTraceElement(index, t.getStackTrace());
           }
+          stackTraceElements = logProduceThread.getStackTraceElement(index);
           stackTraceElement = stackTraceElements[5];
         }
         this.produce(stackTraceElement, logLevel, dateTime, message, name, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, thrown, record);
@@ -219,18 +213,15 @@ public class EventLogComponentContext extends LifecycleBase implements LogCompon
   public void synchronous(final int index, final String logLevel, final String dateTime, final String message, final String name, final Object arg1, final Object arg2, final Object arg3, final Object arg4, final Object arg5, final Object arg6, final Object arg7, final Object arg8, final Object arg9, final Throwable thrown) {
     final LogProduceThread logProduceThread = ThreadLocalTool.getLogProduceThread();
     final Record record = logProduceThread.getRecord();
-    final RecorderConfig recorderConfig = this.getRecorderConfig(name);
-    final String handlers = recorderConfig.getHandlers();
-    final HandlerConfig handlerConfig = this.getHandlerConfig(handlers);
     try {
       StackTraceElement stackTraceElement = null;
       if (index != 0) {
-        StackTraceElement[] stackTraceElements = this.stackTraces.get(index);
+        StackTraceElement[] stackTraceElements = logProduceThread.getStackTraceElement(index);
         if (stackTraceElements == null) {
           final Throwable t = new Throwable();
-          this.stackTraces.put(index, t.getStackTrace());
-          stackTraceElements = this.stackTraces.get(index);
+          logProduceThread.setStackTraceElement(index, t.getStackTrace());
         }
+        stackTraceElements = logProduceThread.getStackTraceElement(index);
         stackTraceElement = stackTraceElements[5];
       }
       this.produce(stackTraceElement, logLevel, dateTime, message, name, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, thrown, record);

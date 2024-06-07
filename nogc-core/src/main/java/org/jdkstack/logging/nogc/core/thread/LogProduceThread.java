@@ -1,5 +1,7 @@
 package org.jdkstack.logging.nogc.core.thread;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.jdkstack.logging.nogc.api.record.Record;
 import org.jdkstack.logging.nogc.core.record.LogRecord;
 
@@ -26,6 +28,8 @@ public final class LogProduceThread extends Thread {
   private final Record record = new LogRecord();
   /** . */
   private long execStart;
+  /** Each thread has one object,Maximum number of stack objects<=3600. */
+  private Map<Integer, StackTraceElement[]> stackTraces = new HashMap<>(4800);
 
   public LogProduceThread(ThreadGroup currentThreadGroup, final Runnable targetParam, final String nameParam) {
     super(currentThreadGroup, targetParam, nameParam);
@@ -100,5 +104,13 @@ public final class LogProduceThread extends Thread {
 
   public String getThreadName() {
     return this.name;
+  }
+
+  public StackTraceElement[] getStackTraceElement(int index) {
+    return stackTraces.get(index);
+  }
+
+  public void setStackTraceElement(int index, StackTraceElement[] stackTraceElement) {
+    stackTraces.put(index, stackTraceElement);
   }
 }
