@@ -46,18 +46,19 @@ Runtime version : OpenJDK 1.8, OpenJDK 11, OpenJDK 17, OpenJDK 21, GraalVM for O
 10. Support Static Rate Limiter(Token Bucket). ✓
 11. Support Static Filter(Static Rate Limiter filter,Traffic Policing filter and Traffic Shaping filter). ✓
 12. Support any log event format,like json,text,xml or some things. ✓
+13. Support SpanId and TraceId. ✓
+14. Support Dynamic Rate Limiter(TCP Vegas). ✓
+15. Support Dynamic Filter(Dynamic Rate Limiter filter,Traffic Policing filter and Traffic Shaping filter). ✓
+16. Support Dynamic io back pressure(Dynamic Rate Limiter,Traffic Shaping,fine-grained). ✓
+17. Support web manage. ✓
+18. Support storage backend to store configuration information. ✓
 
 ## wish list:
 
 01. ~~Support exception stack.~~ ✕
-02. ~~Support web manage.~~ ✕
-03. ~~Support distributed.~~ ✕
-04. ~~Support storage backend to store configuration information.~~ ✕
-05. ~~Support location(Use the bytecode tools to convert class files).~~ ✕
-06. Support raft.✕
-07. Support Dynamic Rate Limiter(TCP Vegas).✕
-08. Support Dynamic Filter(Dynamic Rate Limiter filter,Traffic Policing filter and Traffic Shaping filter). ✕
-09. Support Dynamic io back pressure(Dynamic Rate Limiter,Traffic Shaping,fine-grained). ✕
+02. ~~Support distributed.~~ ✕
+03. ~~Support location(Use the bytecode tools to convert class files).~~ ✕
+04. ~~Support raft.✕~~
 
 ## Directory structure:
 
