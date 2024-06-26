@@ -52,6 +52,9 @@ Runtime version : OpenJDK 1.8, OpenJDK 11, OpenJDK 17, OpenJDK 21, GraalVM for O
 16. Support Dynamic io back pressure(Dynamic Rate Limiter,Traffic Shaping,fine-grained). ✓
 17. Support web manage. ✓
 18. Support storage backend to store configuration information. ✓
+19. Support the open-source library org.apache.derby. ✓
+20. Support json writer and json reader.
+21. Support web controller.
 
 ## wish list:
 
